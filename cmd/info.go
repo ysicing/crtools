@@ -29,7 +29,7 @@ var infoCmd = &cobra.Command{
 		} else {
 			viper.Set("region", Region)
 		}
-		crapi := api.NewApi(AliKey, AliSecret, Region)
+		crapi := api.NewAPI(AliKey, AliSecret, Region)
 		nsres := crapi.NameSpaces()
 		for _, ns := range nsres {
 			klog.Infof("ns: %v, authorize: %v\n", ns.Namespace, ns.AuthorizeType)

@@ -1,4 +1,4 @@
-name: build ergo tools
+name: build crtool
 on:
   push:
     branches:
@@ -7,7 +7,7 @@ on:
     - cron: '0 */12 * * *'
 jobs:
   build:
-    name: build ergo tools
+    name: build crtool tools
     runs-on: ubuntu-latest
     steps:
     - name: Install Go
@@ -25,7 +25,7 @@ jobs:
     - uses: actions/checkout@v1
       with:
         fetch-depth: 1
-    - name: build ergo
+    - name: build crtools
       run: |
           export TZ='Asia/Shanghai'
           export PATH=$PATH:$(go env GOPATH)/bin
@@ -33,9 +33,9 @@ jobs:
           make dpush
 
           pushd dist
-          sha256sum ctools_darwin_amd64 > ctools_darwin_amd64.sha256sum
-          sha256sum ctools_linux_amd64 > ctools_linux_amd64.sha256sum
-          sha256sum ctools_windows_amd64.exe > ctools_windows_amd64.sha256sum
+          sha256sum crtools_darwin_amd64 > crtools_darwin_amd64.sha256sum
+          sha256sum crtools_linux_amd64 > crtools_linux_amd64.sha256sum
+          sha256sum crtools_windows_amd64.exe > crtools_windows_amd64.sha256sum
           popd
           ./gen.sh
           docker logout
