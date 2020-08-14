@@ -4,10 +4,11 @@
 package cmd
 
 import (
+	"fmt"
+	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/ysicing/crtools/api"
-	"k8s.io/klog"
 )
 
 var infoCmd = &cobra.Command{
@@ -31,9 +32,12 @@ var infoCmd = &cobra.Command{
 		}
 		crapi := api.NewAPI(AliKey, AliSecret, Region)
 		nsres := crapi.NameSpaces()
-		for _, ns := range nsres {
-			klog.Infof("ns: %v, authorize: %v\n", ns.Namespace, ns.AuthorizeType)
+		t := table.NewWriter()
+		t.AppendHeader(table.Row{"", "区域", "命名空间", "权限"})
+		for id, ns := range nsres {
+			t.AppendRow(table.Row{id, Region, ns.Namespace, ns.AuthorizeType})
 		}
+		fmt.Println(t.Render())
 		viper.WriteConfig()
 	},
 }

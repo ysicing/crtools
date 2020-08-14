@@ -4,7 +4,7 @@ go 1.14
 
 require (
 	github.com/aliyun/alibaba-cloud-sdk-go v1.61.394
-	github.com/ghodss/yaml v1.0.0
+	github.com/jedib0t/go-pretty/v6 v6.0.4
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/spf13/cobra v1.0.0
 	github.com/spf13/viper v1.7.1

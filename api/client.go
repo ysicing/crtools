@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
+	"github.com/ysicing/crtools/utils"
 	"github.com/ysicing/go-utils/exjson"
 	"k8s.io/klog"
-	"os"
 )
 
 // CrMeta cr元数据
@@ -22,14 +22,15 @@ type CrMeta struct {
 func NewAPI(key, secret, region string) *CrMeta {
 	client, err := sdk.NewClientWithAccessKey(region, key, secret)
 	if err != nil {
-		klog.Error(err)
-		os.Exit(-1)
+		klog.Exit(err)
 	}
 	request := requests.NewCommonRequest()
 	request.Scheme = "https"
-	request.Domain = fmt.Sprintf("cr.%v.aliyuncs.com", region)
+	domain := fmt.Sprintf("cr.%v.aliyuncs.com", region)
+	request.Domain = domain
 	request.Version = "2016-06-07"
 	request.Headers["Content-Type"] = "application/json"
+	utils.LogDebug(fmt.Sprintf("api domain: %v", domain), Debug)
 	return &CrMeta{Client: client, Req: request}
 }
 
@@ -39,6 +40,7 @@ func (c CrMeta) NameSpaces() []Namespace {
 	c.Req.PathPattern = "/namespace"
 	body := `{}`
 	c.Req.Content = []byte(body)
+	utils.LogDebug(c.Req, Debug)
 	response, err := c.Client.ProcessCommonRequest(c.Req)
 	if err != nil {
 		klog.Exit(err)
@@ -47,5 +49,6 @@ func (c CrMeta) NameSpaces() []Namespace {
 	if err := exjson.Decode([]byte(response.GetHttpContentString()), &nsres); err != nil {
 		klog.Exit(err)
 	}
+	utils.LogDebug(nsres, Debug)
 	return nsres.Data.Namespaces
 }

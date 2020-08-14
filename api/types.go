@@ -3,6 +3,9 @@
 
 package api
 
+// Debug debug mode
+var Debug bool
+
 // NamespacesRes 命名空间接口返回元数据
 type NamespacesRes struct {
 	Data struct {

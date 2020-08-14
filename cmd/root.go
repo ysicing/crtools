@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/ysicing/crtools/api"
 	"github.com/ysicing/crtools/config"
 	"github.com/ysicing/go-utils/exfile"
 	"os"
@@ -22,6 +23,8 @@ var (
 	// Region ali region
 	Region  string
 	cfgFile string
+	// Debug debug
+	Debug bool
 )
 
 var rootCmd = &cobra.Command{
@@ -43,6 +46,8 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&AliKey, "key", "", "aliyun accessKeyID")
 	rootCmd.PersistentFlags().StringVar(&AliSecret, "secret", "", "aliyun accessSecret")
 	rootCmd.PersistentFlags().StringVar(&Region, "region", "", "aliyun region (default is cn-beijing)")
+	rootCmd.PersistentFlags().BoolVar(&api.Debug, "debug", false, "debug mode")
+
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 	rootCmd.DisableSuggestions = false
 }
