@@ -2,5 +2,5 @@
 
 ```
 brew tap ysicing/tap
-brew install ergo
+brew install crtools
 ```
