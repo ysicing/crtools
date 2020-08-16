@@ -53,6 +53,20 @@ crtools tags --ns k7scn --repo coredns --tail 10
 
 ```
 
+> 示例: upgrade升级crtools
+
+```bash
+crtools upgrade 
+I0816 08:32:32.655453   83127 upgrade.go:23] ==> Upgrading 1 outdated package:
+ysicing/tap/crtools 0.0.3 -> 0.0.6
+==> Upgrading ysicing/tap/crtools 0.0.3 -> 0.0.6 
+==> Downloading https://github.com/ysicing/crtools/releases/download/0.0.6/crtools_darwin_amd64
+Already downloaded: /Users/ysicing/Library/Caches/Homebrew/downloads/5ebd0244579cc37e5247a1a605eef5cdb24cc8a86e66fc49bed42927db7d30e2--crtools_darwin_amd64
+🍺  /usr/local/Cellar/crtools/0.0.6: 3 files, 14.6MB, built in 3 seconds
+Removing: /usr/local/Cellar/crtools/0.0.3... (3 files, 14.6MB)
+Removing: /Users/ysicing/Library/Caches/Homebrew/crtools--0.0.3... (14.6MB)
+```
+
 ### 版本计划
 
 - [x] 列出命名空间
