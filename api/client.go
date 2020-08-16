@@ -11,6 +11,7 @@ import (
 	"github.com/ysicing/go-utils/exjson"
 	"k8s.io/klog"
 	"sort"
+	"strings"
 )
 
 // CrMeta cr元数据
@@ -19,6 +20,7 @@ type CrMeta struct {
 	Req    *requests.CommonRequest
 }
 
+// CrFree 阿里云乞丐版默认300
 const CrFree = 300
 
 // NewAPI ApiClient
@@ -108,6 +110,7 @@ func (c CrMeta) Repos(num int, ns ...string) (qdata []Repo) {
 	return qdata[:num]
 }
 
+// Tags 标签
 func (c CrMeta) Tags(ns, repo string, num ...int) (qdata []Tag) {
 	c.Req.Method = "GET"
 	c.Req.PathPattern = fmt.Sprintf("/repos/%v/%v/tags", ns, repo)
@@ -151,4 +154,59 @@ func (c CrMeta) Tags(ns, repo string, num ...int) (qdata []Tag) {
 	}
 	return qdata[:num[0]]
 
+}
+
+// PreSearch 搜索
+func (c CrMeta) PreSearch(sn ...string) (qdata []Repo) {
+	c.Req.Method = "GET"
+	c.Req.PathPattern = "/repos"
+	body := `{}`
+	c.Req.Content = []byte(body)
+	ri := 1
+	for {
+		c.Req.QueryParams["PageSize"] = "100"
+		c.Req.QueryParams["Page"] = fmt.Sprintf("%v", ri)
+		utils.LogDebug(c.Req.QueryParams, Debug)
+		response, err := c.Client.ProcessCommonRequest(c.Req)
+		if err != nil {
+			klog.Exit(err)
+		}
+		var reposres ReposRes
+		if err := exjson.Decode([]byte(response.GetHttpContentString()), &reposres); err != nil {
+			klog.Exit(err)
+		}
+		utils.LogDebug(response.GetHttpContentString(), Debug)
+		//qdata = append(qdata, reposres.Data.Repos...)
+		for _, repo := range reposres.Data.Repos {
+			tags := c.Tags(repo.RepoNamespace, repo.RepoName)
+			for _, tag := range tags {
+				repo.LastTag = tag.Tag
+				repo.ImageUpdate = tag.ImageUpdate
+				image := fmt.Sprintf("%v/%v:%v", repo.RepoNamespace, repo.RepoName, tag.Tag)
+				if len(sn) == 0 || strings.Contains(image, sn[0]) {
+					qdata = append(qdata, repo)
+				}
+			}
+		}
+
+		if len(reposres.Data.Repos) < 100 {
+			break
+		}
+		ri++
+	}
+
+	sort.Slice(qdata, func(i, j int) bool {
+		if qdata[i].GmtModified > qdata[j].GmtModified {
+			return true
+		}
+		return false
+	})
+
+	utils.LogDebug(qdata, Debug)
+	//if len(qdata) < num {
+	//	num = len(qdata)
+	//}
+	//klog.Info()
+	//return qdata[:num]
+	return qdata
 }

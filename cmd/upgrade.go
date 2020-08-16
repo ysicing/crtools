@@ -13,8 +13,9 @@ import (
 )
 
 var upgradeCmd = &cobra.Command{
-	Use:   "upgrade",
-	Short: "Upgrade crtools",
+	Use:     "upgrade",
+	Short:   "Upgrade crtools",
+	Aliases: []string{"up"},
 	Run: func(cmd *cobra.Command, args []string) {
 		var pkg = repos.Pkg{"ysicing", "crtools"}
 		lastag, _ := pkg.LastTag()

@@ -53,6 +53,37 @@ crtools tags --ns k7scn --repo coredns --tail 10
 
 ```
 
+> 示例: 搜索
+
+```bash
+crtools sn --sn kube-api
++---+------------+----------------------------------------------------------------+---------------------+
+|   | 区域       | 镜像                                                           | 镜像更新时间        |
++---+------------+----------------------------------------------------------------+---------------------+
+| 0 | cn-beijing | registry.cn-beijing.aliyuncs.com/k7scn/kube-apiserver:v1.18.8  | 2020-08-14 14:55:22 |
+| 1 | cn-beijing | registry.cn-beijing.aliyuncs.com/k7scn/kube-apiserver:v1.17.9  | 2020-08-03 14:10:50 |
+| 2 | cn-beijing | registry.cn-beijing.aliyuncs.com/k7scn/kube-apiserver:v1.18.6  | 2020-08-03 14:07:52 |
+| 3 | cn-beijing | registry.cn-beijing.aliyuncs.com/k7scn/kube-apiserver:v1.16.13 | 2020-07-16 17:23:12 |
+| 4 | cn-beijing | registry.cn-beijing.aliyuncs.com/k7scn/kube-apiserver:v1.18.5  | 2020-07-10 15:45:38 |
+| 5 | cn-beijing | registry.cn-beijing.aliyuncs.com/k7scn/kube-apiserver:v1.17.8  | 2020-07-07 15:24:05 |
+| 6 | cn-beijing | registry.cn-beijing.aliyuncs.com/k7scn/kube-apiserver:v1.16.12 | 2020-07-07 15:22:54 |
+| 7 | cn-beijing | registry.cn-beijing.aliyuncs.com/k7scn/kube-apiserver:v1.15.12 | 2020-06-27 22:16:24 |
+| 8 | cn-beijing | registry.cn-beijing.aliyuncs.com/k7scn/kube-apiserver:v1.16.11 | 2020-06-25 14:45:39 |
+| 9 | cn-beijing | registry.cn-beijing.aliyuncs.com/k7scn/kube-apiserver:v1.18.4  | 2020-06-19 23:24:20 |
++---+------------+----------------------------------------------------------------+---------------------+
+
+crtools sn --sn 1.18.8  
++---+------------+------------------------------------------------------------------------+---------------------+
+|   | 区域       | 镜像                                                                   | 镜像更新时间        |
++---+------------+------------------------------------------------------------------------+---------------------+
+| 0 | cn-beijing | registry.cn-beijing.aliyuncs.com/k7scn/kube-proxy:v1.18.8              | 2020-08-14 14:55:58 |
+| 1 | cn-beijing | registry.cn-beijing.aliyuncs.com/k7scn/kube-scheduler:v1.18.8          | 2020-08-14 14:55:44 |
+| 2 | cn-beijing | registry.cn-beijing.aliyuncs.com/k7scn/kube-controller-manager:v1.18.8 | 2020-08-14 14:55:35 |
+| 3 | cn-beijing | registry.cn-beijing.aliyuncs.com/k7scn/kube-apiserver:v1.18.8          | 2020-08-14 14:55:22 |
++---+------------+------------------------------------------------------------------------+---------------------+
+
+```
+
 > 示例: upgrade升级crtools
 
 ```bash
@@ -72,5 +103,5 @@ Removing: /Users/ysicing/Library/Caches/Homebrew/crtools--0.0.3... (14.6MB)
 - [x] 列出命名空间
 - [x] 列出镜像
 - [x] 列出标签
-- [ ] 支持搜素
+- [x] 支持搜素
 - [ ] 支持删除

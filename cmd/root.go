@@ -31,6 +31,8 @@ var (
 	Repo string
 	// Tailnum 数
 	Tailnum int
+	// SearchName sn
+	SearchName string
 )
 
 var rootCmd = &cobra.Command{

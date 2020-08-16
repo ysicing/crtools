@@ -53,6 +53,7 @@ type Repo struct {
 	GmtCreate      int64  `json:"gmtCreate"`
 	GmtModified    int64  `json:"gmtModified"`
 	LastTag        string `json:"lasttag"`
+	ImageUpdate    int64  `json:"imageUpdate"`
 }
 
 // TagsRes 元数据
