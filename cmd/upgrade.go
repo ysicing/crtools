@@ -20,7 +20,7 @@ var upgradeCmd = &cobra.Command{
 		lastag, _ := pkg.LastTag()
 		if lastag.Name != Version {
 			if runtime.GOOS != "linux" {
-				klog.Exit(excmd.RunCmdRes("/bin/zsh", "-c", "brew upgrade ysicing/tap/crtools"))
+				klog.Info(excmd.RunCmdRes("/bin/zsh", "-c", "brew upgrade ysicing/tap/crtools"))
 			} else {
 				newbin := fmt.Sprintf("https://github.com/ysicing/crtools/releases/download/%v/crtools_linux_amd64", lastag.Name)
 				excmd.DownloadFile(newbin, "/usr/local/bin/crtools")
