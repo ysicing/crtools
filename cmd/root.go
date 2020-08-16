@@ -25,6 +25,12 @@ var (
 	cfgFile string
 	// Debug debug
 	Debug bool
+	// Namespace ns
+	Namespace string
+	// Repo repo
+	Repo string
+	// Tailnum 数
+	Tailnum int
 )
 
 var rootCmd = &cobra.Command{

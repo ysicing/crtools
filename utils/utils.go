@@ -3,7 +3,9 @@
 
 package utils
 
-import "k8s.io/klog"
+import (
+	"k8s.io/klog"
+)
 
 // LogDebug debug
 func LogDebug(msg interface{}, mode bool) {

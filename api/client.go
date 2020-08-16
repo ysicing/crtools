@@ -10,6 +10,7 @@ import (
 	"github.com/ysicing/crtools/utils"
 	"github.com/ysicing/go-utils/exjson"
 	"k8s.io/klog"
+	"sort"
 )
 
 // CrMeta cr元数据
@@ -17,6 +18,8 @@ type CrMeta struct {
 	Client *sdk.Client
 	Req    *requests.CommonRequest
 }
+
+const CrFree = 300
 
 // NewAPI ApiClient
 func NewAPI(key, secret, region string) *CrMeta {
@@ -51,4 +54,101 @@ func (c CrMeta) NameSpaces() []Namespace {
 	}
 	utils.LogDebug(nsres, Debug)
 	return nsres.Data.Namespaces
+}
+
+// Repos 仓库列表
+func (c CrMeta) Repos(num int, ns ...string) (qdata []Repo) {
+	c.Req.Method = "GET"
+	if len(ns) > 0 {
+		c.Req.PathPattern = fmt.Sprintf("/repos/%v", ns[0])
+	} else {
+		c.Req.PathPattern = "/repos"
+	}
+	body := `{}`
+	c.Req.Content = []byte(body)
+	ri := 1
+	for {
+		c.Req.QueryParams["PageSize"] = "100"
+		c.Req.QueryParams["Page"] = fmt.Sprintf("%v", ri)
+		utils.LogDebug(c.Req.QueryParams, Debug)
+		response, err := c.Client.ProcessCommonRequest(c.Req)
+		if err != nil {
+			klog.Exit(err)
+		}
+		var reposres ReposRes
+		if err := exjson.Decode([]byte(response.GetHttpContentString()), &reposres); err != nil {
+			klog.Exit(err)
+		}
+		utils.LogDebug(response.GetHttpContentString(), Debug)
+		//qdata = append(qdata, reposres.Data.Repos...)
+		for _, repo := range reposres.Data.Repos {
+			tag := c.Tags(repo.RepoNamespace, repo.RepoName, 1)
+			repo.LastTag = tag[0].Tag
+			qdata = append(qdata, repo)
+		}
+
+		if len(reposres.Data.Repos) < 100 || ri == 3 || num < 100 {
+			break
+		}
+		ri++
+	}
+
+	sort.Slice(qdata, func(i, j int) bool {
+		if qdata[i].GmtModified > qdata[j].GmtModified {
+			return true
+		}
+		return false
+	})
+
+	utils.LogDebug(qdata, Debug)
+	if len(qdata) < num {
+		num = len(qdata)
+	}
+	klog.Info()
+	return qdata[:num]
+}
+
+func (c CrMeta) Tags(ns, repo string, num ...int) (qdata []Tag) {
+	c.Req.Method = "GET"
+	c.Req.PathPattern = fmt.Sprintf("/repos/%v/%v/tags", ns, repo)
+	body := `{}`
+	c.Req.Content = []byte(body)
+	ri := 1
+	for {
+		c.Req.QueryParams["PageSize"] = "100"
+		c.Req.QueryParams["Page"] = fmt.Sprintf("%v", ri)
+		utils.LogDebug(c.Req.QueryParams, Debug)
+		response, err := c.Client.ProcessCommonRequest(c.Req)
+		if err != nil {
+			klog.Exit(err)
+		}
+		var tagsres TagsRes
+		if err := exjson.Decode([]byte(response.GetHttpContentString()), &tagsres); err != nil {
+			klog.Exit(err)
+		}
+		utils.LogDebug(response.GetHttpContentString(), Debug)
+		qdata = append(qdata, tagsres.Data.Tags...)
+
+		if len(tagsres.Data.Tags) < 100 {
+			break
+		}
+		ri++
+	}
+
+	sort.Slice(qdata, func(i, j int) bool {
+		if qdata[i].ImageUpdate > qdata[j].ImageUpdate {
+			return true
+		}
+		return false
+	})
+
+	utils.LogDebug(qdata, Debug)
+	if len(num) == 0 {
+		return qdata
+	}
+	if len(qdata) < num[0] {
+		return qdata
+	}
+	return qdata[:num[0]]
+
 }
