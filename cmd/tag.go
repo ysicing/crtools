@@ -5,33 +5,34 @@ package cmd
 
 import (
 	"fmt"
+
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/ysicing/crtools/api"
-	"github.com/ysicing/go-utils/extime"
+	"github.com/ysicing/ext/utils/extime"
 )
 
 var tagsCmd = &cobra.Command{
 	Use:   "tags",
 	Short: "镜像标签管理",
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(AliKey) == 0 {
-			AliKey = viper.GetString("ali_key")
+		if len(Key) == 0 {
+			Key = viper.GetString("ali_key")
 		} else {
-			viper.Set("ali_key", AliKey)
+			viper.Set("ali_key", Key)
 		}
-		if len(AliSecret) == 0 {
-			AliSecret = viper.GetString("ali_secret")
+		if len(Secret) == 0 {
+			Secret = viper.GetString("ali_secret")
 		} else {
-			viper.Set("ali_secret", AliSecret)
+			viper.Set("ali_secret", Secret)
 		}
 		if len(Region) == 0 {
 			Region = viper.GetString("region")
 		} else {
 			viper.Set("region", Region)
 		}
-		crapi := api.NewAPI(AliKey, AliSecret, Region)
+		crapi := api.NewAPI(Key, Secret, Region)
 		tagsres := crapi.Tags(Namespace, Repo, Tailnum)
 		t := table.NewWriter()
 		t.AppendHeader(table.Row{"", "镜像", "版本", "镜像大小", "更新时间"})

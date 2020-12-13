@@ -4,22 +4,35 @@
 package config
 
 import (
-	"github.com/ysicing/go-utils/exfile"
+	"github.com/ysicing/ext/utils/exfile"
 	"gopkg.in/yaml.v2"
 )
 
 // Config 配置
 type Config struct {
-	AliKey    string `yaml:"ali_key"`
-	AliSecret string `yaml:"ali_secret"`
-	Region    string `yaml:"region"`
+	Ali    CloudConfig `yaml:"ali"`
+	Ucloud CloudConfig `yaml:"ucloud"`
+}
+
+// CloudConfig 配置
+type CloudConfig struct {
+	Key    string `yaml:"key"`
+	Secret string `yaml:"secret"`
+	Region string `yaml:"region"`
 }
 
 func exampleConfig() Config {
 	return Config{
-		AliKey:    "example-Shieli2r",
-		AliSecret: "example-ooQue4oLohm7thaT",
-		Region:    "cn-beijing",
+		Ali: CloudConfig{
+			Key:    "meemohBelawoh5oh",
+			Secret: "Thio8dahth6eig2ung2gohreiphie7ge",
+			Region: "cn-beijing",
+		},
+		Ucloud: CloudConfig{
+			Key:    "meemohBelawoh5oh",
+			Secret: "Thio8dahth6eig2ung2gohreiphie7ge",
+			Region: "cn-bj2-04",
+		},
 	}
 }
 

@@ -5,13 +5,14 @@ package api
 
 import (
 	"fmt"
+	"sort"
+	"strings"
+
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/ysicing/crtools/utils"
-	"github.com/ysicing/go-utils/exjson"
+	"github.com/ysicing/ext/utils/exjson"
 	"k8s.io/klog"
-	"sort"
-	"strings"
 )
 
 // CrMeta cr元数据

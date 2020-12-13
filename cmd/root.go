@@ -5,24 +5,27 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/ysicing/crtools/api"
 	"github.com/ysicing/crtools/config"
-	"github.com/ysicing/go-utils/exfile"
-	"os"
+	"github.com/ysicing/ext/utils/exfile"
 
 	homedir "github.com/mitchellh/go-homedir"
 )
 
 var (
-	// AliKey ali key
-	AliKey string
-	// AliSecret ali secret
-	AliSecret string
+	// Key ali key
+	Key string
+	// Secret ali secret
+	Secret string
 	// Region ali region
-	Region  string
-	cfgFile string
+	Region string
+	// Provider 服务商
+	Provider string
+	cfgFile  string
 	// Debug debug
 	Debug bool
 	// Namespace ns
@@ -37,7 +40,7 @@ var (
 
 var rootCmd = &cobra.Command{
 	Use:   "crtools",
-	Short: "阿里云镜像仓库工具",
+	Short: "镜像仓库工具",
 }
 
 // Execute ...
@@ -51,9 +54,10 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.cr.yaml)")
-	rootCmd.PersistentFlags().StringVar(&AliKey, "key", "", "aliyun accessKeyID")
-	rootCmd.PersistentFlags().StringVar(&AliSecret, "secret", "", "aliyun accessSecret")
-	rootCmd.PersistentFlags().StringVar(&Region, "region", "", "aliyun region (default is cn-beijing)")
+	rootCmd.PersistentFlags().StringVar(&Key, "key", "", "cloud accessKeyID")
+	rootCmd.PersistentFlags().StringVar(&Secret, "secret", "", "cloud accessSecret")
+	rootCmd.PersistentFlags().StringVar(&Region, "region", "cn-beijing", "cloud region")
+	rootCmd.PersistentFlags().StringVar(&Provider, "provider", "aliyun", "cloud provider")
 	rootCmd.PersistentFlags().BoolVar(&api.Debug, "debug", false, "debug mode")
 
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")

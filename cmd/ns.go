@@ -15,22 +15,22 @@ var nsCmd = &cobra.Command{
 	Use:   "ns",
 	Short: "命名空间管理",
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(AliKey) == 0 {
-			AliKey = viper.GetString("ali_key")
+		if len(Key) == 0 {
+			Key = viper.GetString("ali_key")
 		} else {
-			viper.Set("ali_key", AliKey)
+			viper.Set("ali_key", Key)
 		}
-		if len(AliSecret) == 0 {
-			AliSecret = viper.GetString("ali_secret")
+		if len(Secret) == 0 {
+			Secret = viper.GetString("ali_secret")
 		} else {
-			viper.Set("ali_secret", AliSecret)
+			viper.Set("ali_secret", Secret)
 		}
 		if len(Region) == 0 {
 			Region = viper.GetString("region")
 		} else {
 			viper.Set("region", Region)
 		}
-		crapi := api.NewAPI(AliKey, AliSecret, Region)
+		crapi := api.NewAPI(Key, Secret, Region)
 		nsres := crapi.NameSpaces()
 		t := table.NewWriter()
 		t.AppendHeader(table.Row{"", "区域", "命名空间", "权限"})

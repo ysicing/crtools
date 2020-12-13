@@ -1,4 +1,4 @@
-## 阿里云docker镜像仓库工具
+## 公有云docker镜像仓库管理工具
 
 ```
 brew tap ysicing/tap

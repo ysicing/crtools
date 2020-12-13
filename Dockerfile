@@ -1,4 +1,4 @@
-FROM ysicing/alpine
+FROM registry.cn-beijing.aliyuncs.com/k7scn/alpine
 
 COPY dist/crtools_linux_amd64 /usr/local/bin/crtools
 

@@ -5,11 +5,12 @@ package cmd
 
 import (
 	"fmt"
+	"runtime"
+
 	"github.com/spf13/cobra"
 	"github.com/wangle201210/githubapi/repos"
-	"github.com/ysicing/go-utils/excmd"
+	"github.com/ysicing/ext/utils/excmd"
 	"k8s.io/klog"
-	"runtime"
 )
 
 var upgradeCmd = &cobra.Command{
