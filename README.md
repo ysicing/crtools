@@ -105,3 +105,5 @@ Removing: /Users/ysicing/Library/Caches/Homebrew/crtools--0.0.3... (14.6MB)
 - [x] 列出标签
 - [x] 支持搜素
 - [ ] 支持删除
+- [ ] 支持上传镜像
+- [ ] 支持企业版
