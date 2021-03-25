@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/viper"
 	"github.com/ysicing/crtools/api"
 	"github.com/ysicing/crtools/config"
-	"github.com/ysicing/ext/utils/exfile"
+	"github.com/ysicing/ext/file"
 
 	homedir "github.com/mitchellh/go-homedir"
 )
@@ -72,7 +72,7 @@ func initConfig() {
 		}
 		cfgFile = fmt.Sprintf("%v/%v", home, ".cr.yaml")
 	}
-	if !exfile.CheckFileExistsv2(cfgFile) {
+	if !file.CheckFileExists(cfgFile) {
 		config.WriteDefaultCfg(cfgFile)
 	}
 

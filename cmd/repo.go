@@ -10,7 +10,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/ysicing/crtools/api"
-	"github.com/ysicing/ext/utils/extime"
+	"github.com/ysicing/ext/ztime"
 )
 
 var repoCmd = &cobra.Command{
@@ -43,7 +43,7 @@ var repoCmd = &cobra.Command{
 		t.AppendHeader(table.Row{"", "区域", "镜像", "更新时间"})
 		for id, repo := range repores {
 			t.AppendRow(table.Row{id, Region, fmt.Sprintf("registry.%v.aliyuncs.com/%v/%v:%v", Region, repo.RepoNamespace, repo.RepoName, repo.LastTag),
-				extime.UnixInt642String(repo.GmtModified / 1000)})
+				ztime.UnixInt642String(repo.GmtModified / 1000)})
 		}
 		fmt.Println(t.Render())
 		viper.WriteConfig()

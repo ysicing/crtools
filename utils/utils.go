@@ -4,12 +4,12 @@
 package utils
 
 import (
-	"k8s.io/klog"
+	"github.com/ysicing/ext/logger/zlog"
 )
 
 // LogDebug debug
 func LogDebug(msg interface{}, mode bool) {
 	if mode {
-		klog.Info(msg)
+		zlog.Info("[DEBUG]", msg)
 	}
 }

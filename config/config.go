@@ -4,7 +4,7 @@
 package config
 
 import (
-	"github.com/ysicing/ext/utils/exfile"
+	"github.com/ysicing/ext/file"
 	"sigs.k8s.io/yaml"
 )
 
@@ -39,5 +39,5 @@ func exampleConfig() Config {
 // WriteDefaultCfg 写默认配置文件
 func WriteDefaultCfg(path string) {
 	cfg, _ := yaml.Marshal(exampleConfig())
-	exfile.WriteFile(path, string(cfg))
+	file.Writefile(path, string(cfg))
 }

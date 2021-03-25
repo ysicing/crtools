@@ -10,7 +10,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/ysicing/crtools/api"
-	"github.com/ysicing/ext/utils/extime"
+	"github.com/ysicing/ext/ztime"
 )
 
 var tagsCmd = &cobra.Command{
@@ -38,7 +38,7 @@ var tagsCmd = &cobra.Command{
 		t.AppendHeader(table.Row{"", "镜像", "版本", "镜像大小", "更新时间"})
 		for id, tag := range tagsres {
 			t.AppendRow(table.Row{id, fmt.Sprintf("registry.%v.aliyuncs.com/%v/%v:%v", Region, Namespace, Repo, tag.Tag), tag.Tag,
-				tag.ImageSize, extime.UnixInt642String(tag.ImageUpdate / 1000)})
+				tag.ImageSize, ztime.UnixInt642String(tag.ImageUpdate / 1000)})
 		}
 		fmt.Println(t.Render())
 		viper.WriteConfig()

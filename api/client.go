@@ -4,15 +4,16 @@
 package api
 
 import (
+	"encoding/json"
 	"fmt"
+	"github.com/ysicing/ext/logger/zlog"
+	"k8s.io/klog/v2"
 	"sort"
 	"strings"
 
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/ysicing/crtools/utils"
-	"github.com/ysicing/ext/utils/exjson"
-	"k8s.io/klog"
 )
 
 // CrMeta cr元数据
@@ -28,7 +29,7 @@ const CrFree = 300
 func NewAPI(key, secret, region string) *CrMeta {
 	client, err := sdk.NewClientWithAccessKey(region, key, secret)
 	if err != nil {
-		klog.Exit(err)
+		zlog.Error("err: %v",err)
 	}
 	request := requests.NewCommonRequest()
 	request.Scheme = "https"
@@ -49,11 +50,11 @@ func (c CrMeta) NameSpaces() []Namespace {
 	utils.LogDebug(c.Req, Debug)
 	response, err := c.Client.ProcessCommonRequest(c.Req)
 	if err != nil {
-		klog.Exit(err)
+		zlog.Error("err: %v",err)
 	}
 	var nsres NamespacesRes
-	if err := exjson.Decode([]byte(response.GetHttpContentString()), &nsres); err != nil {
-		klog.Exit(err)
+	if err := json.Unmarshal([]byte(response.GetHttpContentString()), &nsres); err != nil {
+		zlog.Error("err: %v",err)
 	}
 	utils.LogDebug(nsres, Debug)
 	return nsres.Data.Namespaces
@@ -76,11 +77,11 @@ func (c CrMeta) Repos(num int, ns ...string) (qdata []Repo) {
 		utils.LogDebug(c.Req.QueryParams, Debug)
 		response, err := c.Client.ProcessCommonRequest(c.Req)
 		if err != nil {
-			klog.Exit(err)
+			zlog.Error("err: %v",err)
 		}
 		var reposres ReposRes
-		if err := exjson.Decode([]byte(response.GetHttpContentString()), &reposres); err != nil {
-			klog.Exit(err)
+		if err := json.Unmarshal([]byte(response.GetHttpContentString()), &reposres); err != nil {
+			zlog.Error("err: %v",err)
 		}
 		utils.LogDebug(response.GetHttpContentString(), Debug)
 		//qdata = append(qdata, reposres.Data.Repos...)
@@ -124,11 +125,11 @@ func (c CrMeta) Tags(ns, repo string, num ...int) (qdata []Tag) {
 		utils.LogDebug(c.Req.QueryParams, Debug)
 		response, err := c.Client.ProcessCommonRequest(c.Req)
 		if err != nil {
-			klog.Exit(err)
+			zlog.Error("err: %v",err)
 		}
 		var tagsres TagsRes
-		if err := exjson.Decode([]byte(response.GetHttpContentString()), &tagsres); err != nil {
-			klog.Exit(err)
+		if err := json.Unmarshal([]byte(response.GetHttpContentString()), &tagsres); err != nil {
+			zlog.Error("err: %v", err)
 		}
 		utils.LogDebug(response.GetHttpContentString(), Debug)
 		qdata = append(qdata, tagsres.Data.Tags...)
@@ -170,11 +171,11 @@ func (c CrMeta) PreSearch(sn ...string) (qdata []Repo) {
 		utils.LogDebug(c.Req.QueryParams, Debug)
 		response, err := c.Client.ProcessCommonRequest(c.Req)
 		if err != nil {
-			klog.Exit(err)
+			zlog.Error("err: %v",err)
 		}
 		var reposres ReposRes
-		if err := exjson.Decode([]byte(response.GetHttpContentString()), &reposres); err != nil {
-			klog.Exit(err)
+		if err := json.Unmarshal([]byte(response.GetHttpContentString()), &reposres); err != nil {
+			zlog.Error("%v", err)
 		}
 		utils.LogDebug(response.GetHttpContentString(), Debug)
 		//qdata = append(qdata, reposres.Data.Repos...)
